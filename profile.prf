@@ -1,0 +1,4 @@
+# Disable FILE-6310 - Separation of partitions
+skip-test=FILE-6310
+# Disable SSH port 22 test
+skip-test=SSH-7408:Port
