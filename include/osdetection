@@ -144,6 +144,13 @@
                 OS_ID=$(grep "^ID=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')
                 if [ -n "${OS_ID}" ]; then
                     case ${OS_ID} in
+                        "almalinux")
+                            LINUX_VERSION="AlmaLinux"
+                            OS_NAME=$(grep "^PRETTY_NAME=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')
+                            OS_REDHAT_OR_CLONE=1
+                            OS_VERSION=$(grep "^VERSION_ID=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')
+                            OS_VERSION_FULL=$(grep "^VERSION=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')                           
+                        ;;
                         "alpine")
                             LINUX_VERSION="Alpine Linux"
                             OS_NAME=$(grep "^PRETTY_NAME=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')
@@ -161,6 +168,17 @@
                             OS_FULLNAME="Arch Linux"
                             OS_VERSION="Rolling release"
                         ;;
+                        "arch32")
+                            LINUX_VERSION="Arch Linux 32"
+                            OS_FULLNAME="Arch Linux 32"
+                            OS_VERSION="Rolling release"
+                        ;;
+                        "bunsenlabs")
+                            LINUX_VERSION="BunsenLabs"
+                            OS_NAME="BunsenLabs"
+                            OS_VERSION=$(grep "^VERSION_ID=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')
+                            OS_VERSION_FULL=$(grep "^VERSION=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')
+                        ;;  
                         "centos")
                             LINUX_VERSION="CentOS"
                             OS_NAME="CentOS Linux"
@@ -189,7 +207,7 @@
                             OS_NAME="Debian"
                             OS_VERSION=$(grep "^VERSION_ID=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')
                             OS_VERSION_FULL=$(grep "^VERSION=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')
-                        ;;
+                        ;;                     
                         "devuan")
                             LINUX_VERSION="Devuan"
                             OS_NAME="Devuan"
@@ -255,7 +273,7 @@
                             OS_VERSION=$(grep "^VERSION_ID=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')
                             OS_VERSION_FULL=$(grep "^VERSION=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')
                         ;;
-                        "manjaro")
+                        "manjaro" | "manjaro-arm")
                             LINUX_VERSION="Manjaro"
                             OS_FULLNAME="Manjaro Linux"
                             OS_NAME="Manjaro"
@@ -318,6 +336,12 @@
                             OS_VERSION_FULL=$(grep "^VERSION=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')
                             OS_FULLNAME="${OS_NAME} ${OS_VERSION_FULL}"
                             OS_REDHAT_OR_CLONE=1
+                        ;;
+                         "rocky")
+                            LINUX_VERSION="Rocky Linux"
+                            OS_NAME="Rocky Linux"
+                            OS_REDHAT_OR_CLONE=1
+                            OS_VERSION=$(grep "^VERSION_ID=" /etc/os-release | awk -F= '{print $2}' | tr -d '"')
                         ;;
                         "rosa")
                             LINUX_VERSION="ROSA Linux"
