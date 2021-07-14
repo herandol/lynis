@@ -1,6 +1,13 @@
 # Lynis Changelog
 
-## Lynis 3.0.5 (not released yet)
+## Lynis 3.0.6 (not released yet)
+
+### Changed
+- GetHostID function: fallback options added for Linux systems
+
+---------------------------------------------------------------------------------
+
+## Lynis 3.0.5 (2021-07-02)
 
 ### Added
 - OS detection of Arch Linux 32, BunsenLabs Linux, and Rocky Linux
@@ -10,6 +17,9 @@
 - ACCT-9622 - Corrected typo
 - HRDN-7231 - When calling wc, use the short -l flag instead of --lines (Busybox compatibility)
 - PKGS-7320 - extended to Arch Linux 32
+- Generation of host identifiers (hostid/hostid2) extended
+- Linux host identifiers are now using ip as preferred input source
+- Improved logging in several areas
 
 ---------------------------------------------------------------------------------
 
