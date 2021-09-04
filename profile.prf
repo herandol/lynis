@@ -2,3 +2,6 @@
 skip-test=FILE-6310
 # Disable SSH port 22 test
 skip-test=SSH-7408:Port
+skip-test=SSH-7408:AllowTcpForwarding
+skip-test=HRDN-7222
+skip-test=FIRE-4513
