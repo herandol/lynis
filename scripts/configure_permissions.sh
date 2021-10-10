@@ -10,3 +10,4 @@ chmod 700 /etc/cron.weekly
 chmod 700 /etc/cron.monthly
 chmod 700 /home/*
 chmod 750 /etc/sudoers.d
+chmod o+x /var/lib/command-not-found/*
