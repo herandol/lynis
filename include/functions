@@ -1306,6 +1306,11 @@
         if [ $# -ne 2 ]; then Fatal "Incorrect usage of HasCorrectFilePermissions"; fi
         CHECKFILE="$1"
         CHECKPERMISSION_FULL="$2"
+        # Check for symlink
+        if [ -L ${CHECKFILE} ]; then
+            ShowSymlinkPath ${CHECKFILE}
+            if [ ! "${SYMLINK}" = "" ]; then CHECKFILE="${SYMLINK}"; fi
+        fi
         if [ ! -d ${CHECKFILE} -a ! -f ${CHECKFILE} ]; then
             return 2
         else
@@ -1320,9 +1325,8 @@
                 CHECK_PERMISSION=$(echo "${CHECK_PERMISSION}" | ${AWKBINARY} '{printf "%03d",$1}')
 
                 # First try stat command
-                LogText "Test: checking if file ${CHECKFILE} has the permissions set to ${CHECK_PERMISSION} or more restrictive"
+                LogText "Test: checking if file ${CHECKFILE} has the permissions set to ${CHECK_PERMISSION} (${CHECKPERMISSION_FULL}) or more restrictive"
                 if [ -n "${STATBINARY}" ]; then
-
                     case ${OS} in
                         *BSD | "macOS")
                             # BSD and macOS have no --format, only short notation
@@ -1388,7 +1392,7 @@
                 fi
             done
 
-            LogText "Outcome: permissions of file ${CHECKFILE} are not matching expected value (${DATA} != ${CHECKPERMISSION_FULL})"
+            LogText "Outcome: permissions of file ${CHECKFILE} are not matching expected value (${DATA} != ${CHECK_PERMISSION})"
             # No match, return exit code 1
             return 1
         fi
@@ -2002,7 +2006,11 @@
         if [ $# -eq 0 ]; then ExitFatal "Missing parameter when calling IsWorldWritable function"; fi
         sFILE=$1
         FileIsWorldWritable=""
-
+        # Check for symlink
+        if [ -L ${sFILE} ]; then
+            ShowSymlinkPath ${sFILE}
+            if [ ! "${SYMLINK}" = "" ]; then sFILE="${SYMLINK}"; fi
+        fi
         # Only check if target is a file or directory
         if [ -f ${sFILE} -o -d ${sFILE} ]; then
             FINDVAL=$(ls -ld ${sFILE} | cut -c 9)
@@ -2089,6 +2097,9 @@
             if [ -n "${output}" ]; then exit_code=0; else exit_code=1; fi
         elif [ -n "${XBPSBINARY}" ]; then
             output=$(${XBPSBINARY} ${package} 2> /dev/null | ${GREPBINARY} "^ii")
+            exit_code=$?
+        elif [ -n "${APKBINARY}" ]; then
+            output=$(${APKBINARY} search ${package} 2> /dev/null | ${GREPBINARY} ${package})
             exit_code=$?
         else
             if [ "${package}" != "__dummy__" ]; then
